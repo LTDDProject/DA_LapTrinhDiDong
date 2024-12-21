@@ -1,0 +1,37 @@
+name: ql_tours
+description: "A new Flutter project."
+publish_to: 'none'  # Nếu bạn không muốn công bố trên pub.dev, để 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.6.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  carousel_slider: ^5.0.0
+  file_picker: ^8.1.5
+  http: ^1.2.2
+  mime: ^1.0.0
+  image_picker: ^0.8.4+5
+  intl: ^0.18.0
+  dio: ^4.0.0
+  google_sign_in: ^5.0.7
+  html: ^0.15.0
+
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0  # Lint cho Flutter để code dễ bảo trì hơn
+
+flutter:
+  uses-material-design: true  # Đảm bảo sử dụng thiết kế vật liệu
+
+  assets:
+    - assets/images/
+    - assets/images/tours/
+
+
