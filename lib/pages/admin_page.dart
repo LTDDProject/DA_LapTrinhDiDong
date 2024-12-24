@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:ql_tours/admin/hotel/hotel_detail_page.dart';
+import 'package:ql_tours/admin/hotel/hotel_list_page.dart';
 import '../admin/category/category_list_page.dart';
 import '../admin/tour/tour_list_page.dart';
 import '../admin/user/user_list_page.dart';
 import '../admin/manage/manage_list_page.dart';
 import '../admin/booking/booking_list_page.dart';
 import '../admin/tourdetail_list_page.dart';
+import '../admin/vehicle/vehicle_list_page.dart';
+
 
 class AdminPage extends StatelessWidget {
   const AdminPage({super.key});
@@ -52,6 +56,36 @@ class AdminPage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => TourDetailPage()), // Điều hướng đến trang quản lý chi tiết tour
+                  );
+                },
+              ),
+            ),
+            //Quản lý khách sạn
+            Card(
+              margin: const EdgeInsets.symmetric(vertical: 8.0),
+              elevation: 5,
+              child: ListTile(
+                leading: const Icon(Icons.hotel, color: Colors.orange),
+                title: const Text('Quản lý Khách sạn'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => HotelListPage()), // Điều hướng đến trang quản lý khách sạn
+                  );
+                },
+              ),
+            ),
+            //Quản lý Phương tiện
+            Card(
+              margin: const EdgeInsets.symmetric(vertical: 8.0),
+              elevation: 5,
+              child: ListTile(
+                leading: const Icon(Icons.directions_car, color: Colors.blue),
+                title: const Text('Quản lý Phương tiện'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => VehicleListPage()), // Điều hướng đến trang quản lý phương tiện
                   );
                 },
               ),
