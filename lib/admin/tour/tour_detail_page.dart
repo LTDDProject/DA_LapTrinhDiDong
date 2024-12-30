@@ -27,7 +27,7 @@ class TourDetailPage extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: Image.asset(
-                  'assets/images/${tour.img}', // Đảm bảo đường dẫn ảnh chính xác
+                  'assets/images${tour.img}', // Đảm bảo đường dẫn ảnh chính xác
                   width: double.infinity, // Chiếm toàn bộ chiều rộng
                   height: 200, // Đặt chiều cao cho ảnh
                   fit: BoxFit.cover, // Đảm bảo ảnh không bị méo

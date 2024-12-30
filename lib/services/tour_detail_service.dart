@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import '../models/tourdetail.dart';
 
 class TourDetailApiService {
-  final String baseUrl = "https://localhost:5001/api"; // Đảm bảo URL chính xác
+  final String baseUrl = "http://192.168.1.107:5001/api"; // Đảm bảo URL chính xác
 
   // Hàm lấy danh sách chi tiết tour
   Future<List<TourDetail>> fetchTourDetails() async {

@@ -25,7 +25,7 @@ class Category {
 }
 
 class Tour {
-  final int id;
+  final int tourId; // Đổi từ id thành tourId
   String tourName;
   DateTime startDate;
   DateTime endDate;
@@ -37,7 +37,7 @@ class Tour {
   Category? category; // Thêm thuộc tính Category để ánh xạ qua categoryId
 
   Tour({
-    required this.id,
+    required this.tourId, // Đổi từ id thành tourId
     required this.tourName,
     required this.startDate,
     required this.endDate,
@@ -52,7 +52,7 @@ class Tour {
   // From JSON to Tour object
   factory Tour.fromJson(Map<String, dynamic> json) {
     return Tour(
-      id: json['id'] ?? 0, // Default to 0 if id is null
+      tourId: json['tourId'] ?? 0, // Default to 0 if tourId is null
       tourName: json['tourName'] ?? 'Unknown', // Default to 'Unknown' if tourName is null
       startDate: json['startDate'] != null ? DateTime.parse(json['startDate']) : DateTime.now(),
       endDate: json['endDate'] != null ? DateTime.parse(json['endDate']) : DateTime.now(),
@@ -68,7 +68,7 @@ class Tour {
   // To JSON (use when sending data)
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      'tourId': tourId, // Lưu tourId thay vì id
       'tourName': tourName,
       'startDate': startDate.toIso8601String(), // Convert DateTime to ISO string
       'endDate': endDate.toIso8601String(), // Convert DateTime to ISO string

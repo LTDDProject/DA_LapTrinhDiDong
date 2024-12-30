@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import '../models/category.dart';
 
 class CategoryApi {
-  static const String baseUrl = "https://localhost:5001/api/CategoriesApi";
+  static const String baseUrl = "http://192.168.1.107:5001/api/CategoriesApi";
 
   // Lấy tất cả danh mục
   Future<List<Category>> fetchCategories() async {

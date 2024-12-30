@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'tour_list_page.dart';
-import 'payment_page.dart';
 import 'account_page.dart';
 import '../screens/login_screen.dart';
 import '../screens/admin_login_screen.dart';
-
+import '../services/auth_service.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,10 +15,33 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
+  bool _isLoggedIn = false; // Trạng thái đăng nhập
+
+  @override
+  void initState() {
+    super.initState();
+    _checkLoginStatus(); // Kiểm tra trạng thái đăng nhập khi bắt đầu
+  }
+
+  // Kiểm tra xem người dùng có đang đăng nhập không
+  Future<void> _checkLoginStatus() async {
+    bool loggedIn = await AuthService.isLoggedIn();
+    setState(() {
+      _isLoggedIn = loggedIn;
+    });
+  }
+
+  // Đăng xuất
+  Future<void> _signOut() async {
+    await AuthService.logout();
+    _checkLoginStatus(); // Kiểm tra lại trạng thái sau khi đăng xuất
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Đăng xuất thành công')),
+    );
+  }
 
   final List<Widget> _pages = [
     const TourListPage(),
-    const PaymentPage(),
     UserProfileScreen(),
   ];
 
@@ -50,6 +72,14 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text('Trang Quản Lý Đặt Tour'),
         backgroundColor: Colors.deepPurple,
+        actions: _isLoggedIn
+            ? [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: _signOut,
+          ),
+        ]
+            : [], // Không hiển thị nút logout nếu chưa đăng nhập
       ),
       body: Column(
         children: [
@@ -140,7 +170,8 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: !_isLoggedIn // Chỉ hiển thị nút login khi chưa đăng nhập
+          ? FloatingActionButton(
         onPressed: () {
           // Hiển thị hộp thoại để chọn giữa đăng nhập user hoặc admin
           showDialog(
@@ -156,7 +187,8 @@ class _HomePageState extends State<HomePage> {
                         // Điều hướng đến trang đăng nhập user
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => LoginScreen()),  // Màn hình đăng nhập user
+                          MaterialPageRoute(
+                              builder: (context) => LoginScreen()),
                         );
                       },
                       child: const Text('Đăng nhập User'),
@@ -166,7 +198,9 @@ class _HomePageState extends State<HomePage> {
                         // Điều hướng đến trang đăng nhập admin
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => AdminLoginScreen()),  // Màn hình đăng nhập admin
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  AdminLoginScreen()),
                         );
                       },
                       child: const Text('Đăng nhập Admin'),
@@ -179,8 +213,9 @@ class _HomePageState extends State<HomePage> {
         },
         child: const Icon(Icons.login),
         backgroundColor: Colors.deepPurple,
-      ),
-
+      )
+          : SizedBox.shrink(), // Không hiển thị nút login khi đã đăng nhập
     );
   }
 }
+

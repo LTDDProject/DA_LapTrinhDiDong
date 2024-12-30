@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import '../models/manage.dart'; // Assuming Manage is defined in a separate file
 
 class ManageService {
-  static const String baseUrl = "https://localhost:5001/api/admin/Manage";
+  static const String baseUrl = "http://192.168.1.107:5001/api/admin/Manage";
 
   // Lấy danh sách các quản lý từ API
   Future<List<Manage>> fetchManages() async {

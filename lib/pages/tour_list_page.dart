@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'tour_detail_page.dart';
-import '../models/tour.dart';  // Import the Tour model
-import '../services/tour_service.dart';  // Import ApiService
+import '../models/tour.dart';
+import '../services/tour_service.dart';
 
 class TourListPage extends StatefulWidget {
   const TourListPage({super.key});
@@ -75,7 +75,7 @@ class _TourListPageState extends State<TourListPage> {
                 crossAxisCount: 2,
                 crossAxisSpacing: 8.0,
                 mainAxisSpacing: 8.0,
-                childAspectRatio: 0.75,
+                childAspectRatio: 1,
               ),
               itemCount: tours.length,
               itemBuilder: (context, index) {
@@ -85,7 +85,7 @@ class _TourListPageState extends State<TourListPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => TourDetailPage(tour: tours[index]),
+                        builder: (context) => TourDetailPage(tourId: tours[index].tourId),
                       ),
                     );
                   },
@@ -97,39 +97,24 @@ class _TourListPageState extends State<TourListPage> {
                     child: Column(
                       children: [
                         // Display tour image
-                        Stack(
-                          children: [
-                            Container(
-                              height: 150,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage(
-                                    'assets/images/${tours[index].img.toLowerCase().replaceAll(' ', '_')}',
-                                  ),
-                                  fit: BoxFit.cover,
-                                ),
-                                borderRadius: const BorderRadius.vertical(top: Radius.circular(10)),
-                              ),
+                        AspectRatio(
+                          aspectRatio: 16 / 9, // AspectRatio 16:9 để hiển thị hình ảnh đúng tỉ lệ
+                          child: Image.asset(
+                            'assets/images${tours[index].img.toLowerCase().replaceAll(' ', '_')}',
+                            fit: BoxFit.cover, // Hình ảnh vừa khít với container
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            tours[index].tourName,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
                             ),
-                            Positioned(
-                              left: 0,
-                              right: 0,
-                              top: 0,
-                              bottom: 0,
-                              child: Center(
-                                child: Text(
-                                  tours[index].tourName,
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            )
-
-                          ],
+                            textAlign: TextAlign.center,
+                          ),
                         ),
                       ],
                     ),
@@ -137,7 +122,7 @@ class _TourListPageState extends State<TourListPage> {
                 );
               },
             ),
-          )
+          ),
         ],
       ),
     );

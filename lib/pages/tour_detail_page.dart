@@ -1,128 +1,131 @@
 import 'package:flutter/material.dart';
-import '../models/tour.dart';  // Import the Tour model
+import '../models/tour.dart';
+import '../services/tour_service.dart';
+import '../screens/book_tour_screen.dart';
 
 class TourDetailPage extends StatelessWidget {
-  final Tour tour; // The tour object passed from the previous page
+  final int tourId;
 
-  const TourDetailPage({super.key, required this.tour});
+  const TourDetailPage({super.key, required this.tourId});
 
   @override
   Widget build(BuildContext context) {
+    final tourService = ApiService(); // Thay bookingService bằng tourService
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(tour.tourName), // Display tour name as the app bar title
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.favorite_border, // Favorite icon
-              color: Colors.red, // Icon color (red)
-            ),
-            onPressed: () {
-              // Add action to handle favorite functionality, e.g., add to favorites
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Added to Favorites!')),
-              );
-            },
-          ),
-        ],
+        title: Text('Chi tiết tour'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Display image of the tour
-            Container(
-              height: 250,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(
-                    'assets/images/${tour.img.toLowerCase().replaceAll(' ', '_')}',
-                  ),
-                  fit: BoxFit.cover,
+      body: FutureBuilder<Tour>(
+        future: tourService.fetchTourById(tourId), // Sử dụng fetchTourById từ tourService
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Lỗi: ${snapshot.error}'));
+          } else if (!snapshot.hasData) {
+            return const Center(child: Text('Không tìm thấy dữ liệu tour'));
+          } else {
+            final tour = snapshot.data!;
+            return SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Hiển thị hình ảnh tour
+                    Container(
+                      height: 250,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage(
+                            'assets/images${tour.img.toLowerCase().replaceAll(' ', '_')}',
+                          ),
+                          fit: BoxFit.cover,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    // Hiển thị tên tour
+                    Container(
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      width: double.infinity,
+                      color: Colors.deepPurple,
+                      child: Text(
+                        tour.tourName,
+                        style: const TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    // Hiển thị mô tả tour
+                    Text(
+                      tour.description,
+                      style: const TextStyle(fontSize: 16, color: Colors.black87),
+                      textAlign: TextAlign.justify,
+                    ),
+                    const SizedBox(height: 20),
+                    // Hiển thị chi tiết tour
+                    Row(
+                      children: [
+                        Icon(Icons.attach_money, color: Colors.green),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Giá: ${tour.price} VND',
+                          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      children: [
+                        Icon(Icons.add_circle_outline, color: Colors.orange),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Số lượng: ${tour.quantity}',
+                          style: const TextStyle(fontSize: 16, color: Colors.grey),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      children: [
+                        Icon(Icons.date_range, color: Colors.blue),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Thời gian: ${tour.startDate.toString().split(' ')[0]} - ${tour.endDate.toString().split(' ')[0]}',
+                          style: const TextStyle(fontSize: 16, color: Colors.grey),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    // Nút đặt tour
+                    ElevatedButton(
+                      onPressed: () {
+                        // Chuyển hướng đến BookTourScreen với tourId
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => BookTourScreen(tourId: tourId),
+                          ),
+                        );
+                      },
+                      child: Text('Đặt Ngay'),
+                    ),
+                  ],
                 ),
-                borderRadius: BorderRadius.circular(10),
               ),
-            ),
-            const SizedBox(height: 10),
-            // Display tour name below the image with attractive styling
-            Container(
-              alignment: Alignment.center,
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              width: double.infinity,
-              color: Colors.deepPurple, // Background color for the name
-              child: Text(
-                tour.tourName,
-                style: const TextStyle(
-                  fontSize: 22, // Larger font size
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white, // White text color
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            const SizedBox(height: 20),
-            // Display tour details with icons
-            Row(
-              children: [
-                Icon(
-                  Icons.attach_money, // Price icon
-                  color: Colors.green, // Icon color (green)
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  'Giá: ${tour.price} VND',
-                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            Row(
-              children: [
-                Icon(
-                  Icons.add_circle_outline, // Quantity icon
-                  color: Colors.orange, // Icon color (orange)
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  'Số lượng: ${tour.quantity}',
-                  style: const TextStyle(fontSize: 16, color: Colors.grey),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            Row(
-              children: [
-                Icon(
-                  Icons.date_range, // Start Date icon
-                  color: Colors.blue, // Icon color (blue)
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  'Thời gian: ${tour.startDate.toString().split(' ')[0]} - ${tour.endDate.toString().split(' ')[0]}',
-                  style: const TextStyle(fontSize: 16, color: Colors.grey),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            Row(
-              children: [
-                const SizedBox(width: 8),
-                // Mô tả sẽ tự động xuống dòng nếu cần
-                Expanded(
-                  child: Text(
-                    'Mô tả: ${tour.description}',
-                    style: const TextStyle(fontSize: 16, color: Colors.black),
-                    softWrap: true, // Cho phép xuống dòng tự động
-                    maxLines: null, // Không giới hạn số dòng
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-          ],
-        ),
+            );
+          }
+        },
       ),
     );
   }
 }
+

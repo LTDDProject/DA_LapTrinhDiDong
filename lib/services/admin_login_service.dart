@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 Future<Map<String, dynamic>> login(String username, String password) async {
-  final url = Uri.parse('https://localhost:5001/api/Account/login');  // Thay thế bằng URL của bạn
+  final url = Uri.parse('hhttp://192.168.1.107:5001/api/Account/login');  // Thay thế bằng URL của bạn
 
   final payload = {
     'username': username,

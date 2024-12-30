@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import '../models/vehicle.dart';
 
 class VehicleApi {
-  static const String baseUrl = "https://localhost:5001/api/VehiclesApi";
+  static const String baseUrl = "http://192.168.1.107:5001/api/VehiclesApi";
 
   Future<List<Vehicle>> fetchVehicles() async {
     final response = await http.get(Uri.parse(baseUrl));

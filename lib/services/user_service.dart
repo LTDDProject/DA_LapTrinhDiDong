@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class UserService {
-  final String baseUrl = "https://localhost:5001/api/Users";
+  final String baseUrl = "http://192.168.1.107:5001/api/Users";
 
   // Lấy toàn bộ danh sách người dùng
   Future<List<User>> fetchUsers() async {

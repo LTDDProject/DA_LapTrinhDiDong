@@ -1,6 +1,6 @@
 name: ql_tours
 description: "A new Flutter project."
-publish_to: 'none'  # Nếu bạn không muốn công bố trên pub.dev, để 'none'
+publish_to: 'none'
 
 version: 1.0.0+1
 
@@ -19,6 +19,12 @@ dependencies:
   dio: ^4.0.0
   google_sign_in: ^5.0.7
   html: ^0.15.0
+  url_launcher: ^6.3.1
+  shared_preferences: ^2.0.14
+  webview_flutter: ^4.2.1
+
+
+
 
 
 

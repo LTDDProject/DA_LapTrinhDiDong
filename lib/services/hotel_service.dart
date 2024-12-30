@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import '../models/hotel.dart';
 
 class HotelApi {
-  static const String baseUrl = "https://localhost:5001/api/HotelsApi";
+  static const String baseUrl = "http://192.168.1.107:5001/api/HotelsApi";
 
   // Lấy tất cả khách sạn
   Future<List<Hotel>> fetchHotels() async {

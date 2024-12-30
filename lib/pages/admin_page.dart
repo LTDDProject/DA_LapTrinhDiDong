@@ -6,7 +6,7 @@ import '../admin/tour/tour_list_page.dart';
 import '../admin/user/user_list_page.dart';
 import '../admin/manage/manage_list_page.dart';
 import '../admin/booking/booking_list_page.dart';
-import '../admin/tourdetail_list_page.dart';
+import '../admin/tourdetail/tourdetail_list_page.dart';
 import '../admin/vehicle/vehicle_list_page.dart';
 
 

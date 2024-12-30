@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../services/tour_detail_service.dart';
-import '../models/tourdetail.dart';
-import 'tourdetail/tourdetail_detail_page.dart';
-import 'tourdetail/tourdetail_add_page.dart';
-import 'tourdetail/tourdetail_edit_page.dart';
+import '../../services/tour_detail_service.dart';
+import '../../models/tourdetail.dart';
+import 'tourdetail_detail_page.dart';
+import 'tourdetail_add_page.dart';
+import 'tourdetail_edit_page.dart';
 
 class TourDetailPage extends StatefulWidget {
   @override

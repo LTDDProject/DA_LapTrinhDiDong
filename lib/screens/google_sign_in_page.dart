@@ -11,7 +11,7 @@ class GoogleSignInPage extends StatefulWidget {
 class _GoogleSignInPageState extends State<GoogleSignInPage> {
   // Thêm clientId vào GoogleSignIn
   final GoogleSignIn _googleSignIn = GoogleSignIn(
-    clientId: '704620693402-9ags4133ml9ve65kflrm3hoo7kpt637t.apps.googleusercontent.com', // Thêm clientId của bạn ở đây
+    clientId: '704620693402-9ags4133ml9ve65kflrm3hoo7kpt637t.apps.googleusercontent.com',
     scopes: ['email'],
   );
 
@@ -39,7 +39,7 @@ class _GoogleSignInPageState extends State<GoogleSignInPage> {
 
         // Gửi Google ID token đến backend để lấy JWT
         final response = await http.get(
-          Uri.parse("https://localhost:5001/GoogleResponse?returnUrl=/"),
+          Uri.parse("http://192.168.1.107:5001/GoogleResponse?returnUrl=/"),
           headers: {
             'Authorization': 'Bearer ${googleAuth.idToken}',
           },

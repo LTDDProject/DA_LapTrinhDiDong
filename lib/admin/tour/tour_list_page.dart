@@ -21,7 +21,7 @@ class _TourListPageState extends State<TourListPage> {
   }
 
   void _deleteTour(Tour tour) async {
-    bool success = await ApiService().deleteTour(tour.id);
+    bool success = await ApiService().deleteTour(tour.tourId);
     if (success) {
       setState(() {
         tours = ApiService().fetchTours();
@@ -75,7 +75,7 @@ class _TourListPageState extends State<TourListPage> {
                   leading: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: Image.asset(
-                      'assets/images/${tour.img}', // Make sure the image path is correct
+                      'assets/images${tour.img}', // Make sure the image path is correct
                       width: 50,
                       height: 50,
                       fit: BoxFit.cover,

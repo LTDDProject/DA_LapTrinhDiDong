@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
-import 'dart:html' as html; // Để sử dụng File trong môi trường web
+import 'dart:io';
 import '../models/tour.dart';
 
 class ApiService {
-  final String baseUrl = 'https://localhost:5001/api';
+  final String baseUrl = 'http://192.168.1.107:5001/api';
   final Dio dio = Dio();
 
 
@@ -39,18 +39,23 @@ class ApiService {
       throw Exception('Lỗi khi gọi API: $error');
     }
   }
-
-  // Thêm một tour với hình ảnh sử dụng Dio cho môi trường Web
-  Future<bool> addTour(Tour tour, html.File imgFile) async {
+  Future<Tour> fetchTourById(int tourId) async {
     try {
-      // Đọc file hình ảnh dưới dạng byte
-      final reader = html.FileReader();
-      reader.readAsArrayBuffer(imgFile); // Đọc file dưới dạng ArrayBuffer
+      final response = await dio.get('http://192.168.1.107:5001/api/Tours/$tourId');
+      if (response.statusCode == 200) {
+        return Tour.fromJson(response.data);
+      } else {
+        throw Exception('API request failed with status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching tour: $e');
+      throw Exception('Error fetching tour: $e');
+    }
+  }
 
-      // Đợi cho việc đọc file hoàn tất
-      await reader.onLoadEnd.first;
 
-      // Tạo FormData
+  Future<bool> addTour(Tour tour, File imgFile) async {
+    try {
       var formData = FormData.fromMap({
         'TourName': tour.tourName,
         'Description': tour.description,
@@ -61,31 +66,21 @@ class ApiService {
         'EndDate': tour.endDate.toIso8601String(),
       });
 
-      // Kiểm tra xem đã có dữ liệu tệp chưa
-      if (reader.result != null) {
-        // Chuyển file hình ảnh thành MultipartFile cho Web
+      if (imgFile != null) {
         formData.files.add(MapEntry(
-          'img', // Tên trường này phải giống với tên trường trong API backend
-          MultipartFile.fromBytes(reader.result as List<int>, filename: imgFile.name),
+          'img',
+          MultipartFile.fromFileSync(imgFile.path, filename: imgFile.path.split('/').last),
         ));
-
-      } else {
-        print('Lỗi khi đọc file hình ảnh');
-        return false;
       }
 
-      // Gửi yêu cầu POST để thêm tour
       var response = await dio.post(
         '$baseUrl/Tours',
         data: formData,
-        options: Options(
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        ),
+        options: Options(headers: {
+          'Content-Type': 'multipart/form-data',
+        }),
       );
 
-      // Kiểm tra mã trạng thái trả về
       if (response.statusCode == 201) {
         print('Tour đã được thêm thành công');
         return true;
@@ -94,10 +89,23 @@ class ApiService {
         return false;
       }
     } catch (error) {
-      print('Lỗi: $error');
+      if (error is DioError) {
+        if (error.type == DioErrorType.response) {
+          print('DioError response: ${error.response?.statusCode}, ${error.response?.data}');
+        } else if (error.type == DioErrorType.other) {
+          print('DioError other: ${error.error}');
+        } else {
+          print('DioError: ${error.message}');
+        }
+      }
       throw Exception('Lỗi khi gọi API để thêm tour: $error');
     }
   }
+
+
+
+
+
 
   // Chỉnh sửa một tour đã tồn tại
   Future<bool> editTour(int tourId, Tour tour) async {

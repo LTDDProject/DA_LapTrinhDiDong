@@ -2,8 +2,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/booking.dart';
 
+
 class BookingService {
-  final String baseUrl = "https://localhost:5001/api/BookingsApi";
+  final String baseUrl = "http://192.168.1.107:5001/api/BookingsApi";
 
   Future<List<Booking>> getBookings() async {
     final response = await http.get(Uri.parse(baseUrl));
@@ -22,7 +23,6 @@ class BookingService {
     }
   }
 
-  // Fetch a single booking by ID
   Future<Booking> getBooking(int id) async {
     final response = await http.get(Uri.parse('$baseUrl/$id'));
 
@@ -33,7 +33,6 @@ class BookingService {
     }
   }
 
-  // Create a new booking
   Future<Booking> createBooking(Booking booking) async {
     final response = await http.post(
       Uri.parse(baseUrl),
@@ -48,7 +47,6 @@ class BookingService {
     }
   }
 
-  // Update an existing booking
   Future<void> updateBooking(int id, Booking booking) async {
     final response = await http.put(
       Uri.parse('$baseUrl/$id'),
@@ -61,7 +59,6 @@ class BookingService {
     }
   }
 
-  // Delete a booking by ID
   Future<void> deleteBooking(int id) async {
     final response = await http.delete(Uri.parse('$baseUrl/$id'));
 
@@ -70,7 +67,6 @@ class BookingService {
     }
   }
 
-  // Fetch revenue by month and year
   Future<List<dynamic>> getRevenue() async {
     final response = await http.get(Uri.parse('$baseUrl/Revenue'));
 
@@ -81,7 +77,6 @@ class BookingService {
     }
   }
 
-  // Fetch quarterly revenue
   Future<List<dynamic>> getQuarterlyRevenue() async {
     final response = await http.get(Uri.parse('$baseUrl/QuarterlyRevenue'));
 
